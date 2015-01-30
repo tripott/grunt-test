@@ -12,12 +12,32 @@ module.exports = function(grunt) {
         dest: 'build/<%= pkg.name %>.min.js'
       }
     }
-  });
+
+
+  assemble: {
+  options: {
+    assets: "path/to/assets",
+    data:   "path/to/config.json" 
+  },
+  project: {
+    options: {
+      layout: "path/to/default-layout.hbs",
+      partials: "path/to/partials/**/*.hbs" 
+    },
+    files: {
+      'dest': ["path/to/pages/**/*.hbs" ]
+    }
+  }
+}
+  }); 
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
-
+  grunt.loadNpmTasks('assemble' );
+  grunt.loadNpmTasks('grunt-newer' );
   // Default task(s).
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('minify', ['uglify']);
+  
+  grunt.registerTask('default', ['newer:assemble' ]);
 
 };
